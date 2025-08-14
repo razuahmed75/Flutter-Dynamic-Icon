@@ -1,0 +1,29 @@
+package com.example.flutter_application_1
+
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity: FlutterActivity() {
+    private val CHANNEL = "app.icon.change"
+
+    // Override configureFlutterEngine instead of onCreate for MethodChannel
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+            if (call.method == "changeIcon") {
+                val iconName = call.argument<String>("iconName")
+                if (iconName != null) {
+                    IconSwitcher(this).changeIcon(iconName)
+                    result.success(true)
+                } else {
+                    result.error("INVALID", "Icon name is null", null)
+                }
+            } else {
+                result.notImplemented()
+            }
+        }
+    }
+}

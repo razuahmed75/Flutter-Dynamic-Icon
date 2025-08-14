@@ -1,0 +1,29 @@
+package com.example.flutter_application_1
+
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
+
+class IconSwitcher(private val context: Context) {
+
+    fun changeIcon(iconName: String) {
+        val pm = context.packageManager
+        
+        // All your components
+        val default = ComponentName(context, "com.example.flutter_application_1.MainActivity")
+        val nature = ComponentName(context, "com.example.flutter_application_1.NatureIcon")
+        val game = ComponentName(context, "com.example.flutter_application_1.GameIcon")
+        
+        // Disable all first
+        pm.setComponentEnabledSetting(default, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(nature, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(game, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+        
+        // Enable the chosen one
+        when (iconName) {
+            "default" -> pm.setComponentEnabledSetting(default, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+            "nature" -> pm.setComponentEnabledSetting(nature, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+            "game" -> pm.setComponentEnabledSetting(game, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        }
+    }
+}
